@@ -12,10 +12,6 @@ void solve() {
     for(int i = 1; i <= n; i ++) {
          cin >> a[i];
     }
-    if(n & 1) {
-        cout << 0 << '\n';
-        return ;
-    }
     vector<vector<int>> dp1(n + 2, vector<int> (n + 2)), dp2(n + 2, vector<int> (n + 2));
     for(int i = 0; i <= n; i ++) {
         dp2[i + 1][i] = 1;

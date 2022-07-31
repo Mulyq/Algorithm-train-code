@@ -41,7 +41,6 @@ void Dij(int s) {
             if(dis[v.to] > dis[u] + v.e) {
                 dis[v.to] = dis[u] + v.e;
                 q.push({v.to, dis[v.to], 0});
-                // rG[u].push_back({v.to, v.p});
             }
         }
     }
@@ -70,9 +69,12 @@ void init() {
     }
     tim = 0;
     tag = 0;
+    G.clear();
+    rG.clear();
+    chG.clear();
 }
+
 void tarjan(int u, int f) {
-    
     dfn[u] = low[u] = ++ tim;
     vis[u] = 1;
     stk.push(u);
@@ -124,6 +126,7 @@ void regra() {
 
 void solve() {
     cin >> n >> m;
+    init();
     G.resize(n + 1), rG.resize(n + 1), chG.resize(n + 1);
     for(int i = 0; i < m; i ++) {
         int a, b, e, p;
@@ -132,30 +135,23 @@ void solve() {
     }
     Dij(1);
     add_edge();
-    init();
     tarjan_all();
     regra();
-    vector<int>dp(n + 1);
+    vector<int> dp(n + 1);
     int s = belong[1], t = belong[n];
-    dp[s]=0;
-    queue<int>q;
+    dp[s] = 0;
+    queue<int> q;
     q.push(s);
-    while(!q.empty())
-    {
+    while(!q.empty()) {
         int u=q.front();
         q.pop();
-        for(PII it : chG[u])
-        {
+        for(PII it : chG[u]) {
             int v = it.first, p = it.second;
-            dp[v]=max(dp[u] + p, dp[v]);
+            dp[v] = max(dp[u] + p, dp[v]);
             if(-- deg[v] == 0) q.push(v);
         }
     }
     cout << dis[n] << ' ' << dp[t] << '\n';
-    G.clear();
-    rG.clear();
-    chG.clear();
-    
 }
 signed main() {
     ios::sync_with_stdio(false);

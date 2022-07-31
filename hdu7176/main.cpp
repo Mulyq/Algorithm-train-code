@@ -7,13 +7,13 @@ int n, k;
 vector<PII> G[MAXN];
 int dis[MAXN];
 bool spfa(int s) {
-    for(int i = 0; i <= n; i ++) {
+    for(int i = 0; i <= n + 1; i ++) {
         dis[i] = -INF;
     }
     dis[s] = 0;
     queue<int> q;
-    vector<bool> vis(n + 1);
-    vector<int> cnt(n + 1);
+    vector<bool> vis(n + 2);
+    vector<int> cnt(n + 2);
     q.push(s);
     vis[s] = 1;
     while(q.size()) {
