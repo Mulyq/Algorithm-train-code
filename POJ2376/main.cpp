@@ -16,18 +16,17 @@ bool cmp(PII a, PII b) {
     if(a.first != b.second) return a.first < b.first;
     return a.second < b.second;
 }
-PII v[100010];
+bool cmp2(PII a, PII b) {
+    return a.first < b.first || (a.first == b.first && a.second > b.second);
+}
 int main() {
     int n, t;
     scanf("%d %d",&n, &t);
-    // vector<PII> v(n);
+    vector<PII> v(n);
     for(int i = 0; i < n; i ++) {
         scanf("%d%d", &v[i].first, &v[i].second);
     }
-    sort(v, v + n);
-    // for(int i = 0; i < n; i ++) {
-    //     cout << v[i].first << ' ' << v[i].second << '\n';
-    // }
+    sort(v.begin(), v.end());
     int res = 0;
     int r = 0;
     for(int i = 0; r < t;) {

@@ -7,17 +7,23 @@ int n, m, k, p;
 vector<vector<PII>> G, rG;
 vector<vector<ll>> dp;
 vector<ll> dis1, dis2;
+vector<int> ok;
+
+bool check;
 void init() {
     rG.clear();
     G.clear();
     dp.clear();
     dis1.clear();
     dis2.clear();
+    ok.clear();
     rG.resize(n + 1);
     G.resize(n + 1);
+    ok.resize(n + 1);
     dis1.resize(n + 1, INF);
     dis2.resize(n + 1, INF);
     dp.resize(n + 1, vector<ll> (k + 1));
+    check = 0;
 }
 
 void Dij(int s, int t) {
@@ -60,25 +66,29 @@ void Dij(int s, int t) {
 void Dij2(int s) {
     vector<vector<bool>> vis(n + 1, vector<bool> (k + 1));
     struct node {
-        int u, d, len;
+        int u, d;
         bool operator< (const node &a) const {
             return d > a.d;
         }
     };
     
     priority_queue<node> q;
-    q.push({s, 0, 0});
+    q.push({s, 0});
     dp[s][0] = 1;
     while(q.size()) {
-        int u = q.top().u, d = q.top().d, len = q.top().len;
+        int u = q.top().u, d = q.top().d;
         q.pop();
+        if(!ok[u]) {
+            check = 1;
+            return ;
+        }
         if(vis[u][d + dis2[u] - dis1[n]]) continue;
         vis[u][d + dis2[u] - dis1[n]] = 1;
         for(auto &[v, w] : G[u]) {
             int ex = d + w + dis2[v] - dis1[n];
             if(ex > k) continue;
             (dp[v][ex] += dp[u][d + dis2[u] - dis1[n]]) %= p;
-            q.push({v, d + w, len + 1});
+            q.push({v, d + w});
         }
     }
 }
@@ -92,8 +102,21 @@ void solve() {
         G[a].push_back({b, c});
         rG[b].push_back({a, c});
     }
+
+    for(int i = 1; i <= n; i ++) {
+        for(auto [v, o] : G[i]) {
+            if(o) {
+                ok[v] = 1;
+                ok[i] = 1;
+            }
+        }
+    }
     Dij(1, n);
     Dij2(1);
+    if(check) {
+        cout << -1 << '\n';
+        return ;
+    }
     ll res = 0;
     for(int i = 0; i <= k; i ++) {
         (res += dp[n][i]) %= p;
