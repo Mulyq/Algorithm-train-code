@@ -66,7 +66,7 @@ ll dfs(int u, int d) {
         all ++;
     }
     if(dp[u][ex]) return dp[u][ex];
-    for(auto [v, w] : G[u]) {
+    for(auto &[v, w] : G[u]) {
         (all += dfs(v, d + w)) %= p;
     }
     return dp[u][ex] = all;
