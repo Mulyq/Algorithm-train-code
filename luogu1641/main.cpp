@@ -2,7 +2,7 @@
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> PII;
-const int INF = 1e9 + 7, MAXN = 2e6 + 10, mod = 20100403;
+const int INF = 1e9 + 7, MAXN = 2e1 + 10, mod = 998244353;
 ll fact[MAXN], inv[MAXN];
 int n, m;
 ll qpow(ll x, ll y) {
@@ -18,11 +18,11 @@ ll qpow(ll x, ll y) {
 }
 void init() {
     fact[0] = inv[0] = 1;
-    for(int i = 1; i <= n + m; i ++) {
+    for(int i = 1; i <= 2 * n; i ++) {
         fact[i] = fact[i - 1] * i % mod;
     }
-    inv[n + m] = qpow(fact[n + m], mod - 2);
-    for(int i = n + m - 1; i > 0; i --) {
+    inv[2 * n] = qpow(fact[2 * n], mod - 2);
+    for(int i = 2 * n - 1; i > 0; i --) {
         inv[i] = inv[i + 1] * (i + 1) % mod;
     }
 }
@@ -37,9 +37,13 @@ int main() {
     cin.tie(0);
     cin >> n >> m;
     init();
-    ll res = 0;
-    res += (C(n + m, m) - C(n + m, m - 1) + mod) % mod;
-    // ll t = n - m;
-    // (res *= qpow(2 * n + 1, t) * inv[n - m] % mod) %= mod;
-    cout << res % mod;
+    ll res = (C(n + m, m) - C(n + m, m - 1) + mod) % mod;
+    // cout << C(2 * n, n) << ' ' << C(2 * n, n - 1) << '\n';
+    ll temp = C(n + m, 2) / (m + 1) % mod;
+    if(temp % res == 0) {
+        cout << temp / res << '\n';
+    } else {
+        cout << "HEHE\n";
+     }
+    cout << res % mod << " " << temp % mod;
 }

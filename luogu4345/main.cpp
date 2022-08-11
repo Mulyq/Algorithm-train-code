@@ -27,19 +27,22 @@ void init() {
 }
 ll C(ll n, ll m) {
     if(m > n) return 0;
-    return (fact[n] * inv[m] % mod) * inv[n - m] % mod;
+    return fact[n] * inv[m] * inv[n - m] % mod;
 }
 ll mp[MAXN], cc[MAXN][MAXN];
 ll lucas(ll n, ll m) {
     if(m == 0) return 1;
-    return C(n % mod, m % mod) * lucas(n / mod, m / mod) % mod;
+    return C(n % mod, m % mod) * lucas(n / mod, m / mod);
 }
-
+map<pair<ll, ll>, ll> MP;
 ll f(ll n, ll k) {
     if(k < 0) return 0;
     if(!n || !k) return 1;
     if(n < MAXN && k < MAXN && ff[n][k] >= 0) {
         return ff[n][k];
+    }
+    if(MP.find({n, k}) != MP.end()) {
+        return MP[{n, k}];
     }
     ll res = 0;
     ll kk = lucas(n / mod, k / mod) % mod;
@@ -54,8 +57,9 @@ ll f(ll n, ll k) {
             } else {
                 t = cc[n % mod][i] = lucas(n % mod, i);
             }
-            (tt += t % mod) %= mod;
+            tt += t;
         }
+        tt %= mod;
         kkk[n % mod][k % mod] = tt;
     }
     res += tt * kk % mod;
@@ -74,6 +78,7 @@ ll f(ll n, ll k) {
     }
     (res += (f(n / mod, k / mod - 1) * all) % mod) %= mod;
     if(n < MAXN && k < MAXN) ff[n][k] = res;
+    else MP[{n, k}] = res;
     return res % mod;
 }
 void solve() {

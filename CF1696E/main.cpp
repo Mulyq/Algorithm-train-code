@@ -2,13 +2,13 @@
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> PII;
-const int INF = 0x3f3f3f3f, MAXN = 1e6 + 10, mod = 1e9 + 7;
+const int INF = 1e9 + 7, MAXN = 1e6 + 10, mod = 998244353;
 ll fact[MAXN], inv[MAXN];
 ll qpow(ll x, ll y) {
     ll res = 1;
     while(y) {
-        if(y & 1) (res *= x) %= mod;
-        (x *= x) %= mod;
+        if(y & 1) (res *= x) %= INF;
+        (x *= x) %= INF;
         y >>= 1;
     }
     return res;
@@ -16,15 +16,15 @@ ll qpow(ll x, ll y) {
 void init() {
     inv[0] = fact[0] = 1;
     for(int i = 1; i < MAXN; i ++)  {
-        fact[i] = fact[i - 1] * i % mod;
+        fact[i] = fact[i - 1] * i % INF;
     }
-    inv[MAXN - 1] = qpow(fact[MAXN - 1], mod - 2);
+    inv[MAXN - 1] = qpow(fact[MAXN - 1], INF - 2);
     for(int i = MAXN - 2; i >= 1; i --) {
-        inv[i] = inv[i + 1] * (i + 1) % mod;
+        inv[i] = inv[i + 1] * (i + 1) % INF;
     }
 }
 ll cal(ll n, ll m) {
-    return (fact[n] * inv[m] % mod)* inv[n - m] % mod;
+    return (fact[n] * inv[m] % INF)* inv[n - m] % INF;
 }
 int main() {
     ios::sync_with_stdio(false);
@@ -38,6 +38,6 @@ int main() {
         cin >> a;
         res += cal(i + a, i + 1);
     }
-    cout << res % mod;
+    cout << res % INF;
     return 0;
 }

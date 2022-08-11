@@ -2,7 +2,7 @@
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> PII;
-const int MAXN = 5e3 + 10, mod = 998244353;
+const int INF = 1e9 + 7, MAXN = 5e3 + 10, mod = 998244353;
 int n, k;
 ll fact[MAXN], inv[MAXN];
 ll qpow(ll x, ll y) {
