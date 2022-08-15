@@ -5,27 +5,33 @@ typedef pair<int, int> PII;
 const int INF = 0x3f3f3f3f, MAXN = 3e5 + 10;
 vector<int> tre[MAXN];
 int ch[MAXN], dp[MAXN];
-void dfs(int r, int f) {
+void dfs(int u, int f) {
     ch[f] ++;
-    dp[r] = 0;
-    int s = 0;
-    for(auto x : tre[r]) if(x != f) {
-        dfs(x, r);
-        ch[f] += ch[x];
+    int all = 0;
+    for(int v : tre[u]) if(v != f) {
+        dfs(v, u);
+        ch[u] += ch[v];
+        all += dp[v];
     }
-    for(auto x : tre[r]) if(x != f) {
-        dp[r] = max(dp[x], dp[r]);
+    for(int v : tre[u]) if(v != f) {
+        dp[u] = max(dp[u], all - dp[v] + ch[v]);
     }
-
 }
 void solve() {
     int n;
     cin >> n;
-    for(int i = 0; i < n - 1; i ++) {
-        int u, v;
-        cin >> u >> v;
-        tre[u].push_back(v);
-        tre[v].push_back(u);
+    for(int i = 1; i < n; i ++) {
+        int a, b;
+        cin >> a >> b;
+        tre[a].push_back(b);
+        tre[b].push_back(a);
+    }
+    dfs(1, 0);
+    cout << dp[1] << '\n';
+    for(int i = 0; i <= n; i ++) {
+        tre[i].clear();
+        dp[i] = 0;
+        ch[i] = 0;
     }
 }
 int main() {

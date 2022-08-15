@@ -29,9 +29,8 @@ bool check(int m) {
         int u = q.front();
         q.pop();
         for(auto v : re[u]) {
-            deg[v] --;
             dp[v] = max(dp[v], dp[u] + 1);
-            if(!deg[v]) q.push(v);
+            if(!-- deg[v]) q.push(v);
         }
     }
     for(int i = 0; i < n; i ++) {

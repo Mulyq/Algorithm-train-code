@@ -2,7 +2,7 @@
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> PII;
-const int INF = 0x3f3f3f3f, MAXN = 2e5 + 3e4;
+const int INF = 1e9 + 7, MAXN = 2e5 + 3e4;
 int a[MAXN], d[MAXN << 2], v[MAXN << 2];
 int N = 2e5 + 3e4 -10;
 void add(int k, int l, int r, int s, int t, int x) {
@@ -35,7 +35,6 @@ int ask(int k, int l, int r, int s, int t, int p) {
         return ask(k << 1, l, m, s, m, p) + ask(k << 1 | 1, m + 1, r, m + 1, t, p);
     }
 }
-
 int ask_max(int k, int l, int r) {
     if(l == r) {
         return l;
@@ -54,7 +53,6 @@ int main() {
     cin >> n >> q;
     for(int i = 1; i <= n; i ++) {
         cin >> a[i];
-        
         if(ask(1, 1, N, a[i], a[i], 0) == 0) {
             add(1, 1, N, a[i], a[i], 1);
         } else {
@@ -71,7 +69,6 @@ int main() {
             add(1, 1, N, L + 1, L + 1, 1);
         }
     }
-
     while(q --) {
         int k, l;
         cin >> k >> l;
@@ -90,9 +87,7 @@ int main() {
             add(1, 1, N, a[k], L, 1);
             add(1, 1, N, L + 1, L + 1, - 1);
         }
-
         a[k] = l;
-
         if(ask(1, 1, N, a[k], a[k], 0) == 0) {
             add(1, 1, N, a[k], a[k], 1);
         } else {

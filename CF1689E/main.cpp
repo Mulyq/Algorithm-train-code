@@ -7,10 +7,8 @@ int n;
 struct DSU {
     int N;
     vector<int> pr;
-    vector<int> rk;
     DSU (int n) : N(n) {
         pr.resize(N);
-        rk.resize(N, 1);
         for(int i = 0; i < N; i ++) {
             pr[i] = i;
         }
@@ -21,9 +19,7 @@ struct DSU {
     bool unite(int x, int y) {
         int X = root(x), Y = root(y);
         if(X == Y) return 1;
-        if(rk[X] == rk[Y]) rk[X] ++;
-        if(rk[X] > rk[Y]) pr[Y] = X;
-        else pr[X] = Y;
+        pr[Y] = X;
         return 0;
     }
 };
@@ -50,56 +46,51 @@ void solve() {
         cin >> a[i];
         if(!a[i]) a[i] ++, res ++;
     }
-    if(check(a)) {
-        cout << res << '\n';
-        for(auto x : a) {
-            cout << x << ' ';
-        }
-        cout << '\n';
-    } else {
+    bool ok = check(a);
+    if(!ok) {
         for(int i = 0; i < n; i ++) {
             a[i] ++;
-            if(check(a)) {
-                cout << res + 1 << '\n';
-                for(int x : a) {
-                    cout << x << ' ';  
-                }
-                cout << '\n';
-                return;
-            }
-            a[i] -= 2;
-            if(check(a)) {
-                cout << res + 1 << '\n';
-                for(int x : a) {
-                    cout << x << ' ';  
-                }
-                cout << '\n';
-                return;
-            }
-            a[i] ++;
-        }
-
-        int xl = 0, low = 0;
-        for(int i = 0; i < n; i ++) {
-            int t = (a[i] & (-a[i]));
-            if(t > low) {
-                low = t;
-                xl  = i;
-            }
-        }
-        a[xl] --;
-        for(int i = 0; i < n; i ++) {
-            if((a[i] & (- a[i])) == low && i != xl) {
-                a[i] ++;
+            ok |= check(a);
+            if(ok) {
+                res ++;
                 break;
             }
+            if(a[i] >= 3) {
+                a[i] -= 2;
+                ok |= check(a);
+                if(ok) {
+                    res ++;
+                    break;
+                }
+                a[i] ++;
+            } else {
+                a[i] --;
+            }
         }
-        cout << res + 2 << '\n';
-        for(int x : a) {
-            cout << x << ' ';
+        if(!ok) {
+            res += 2;
+            int xl = 0, low = 0;
+            for(int i = 0; i < n; i ++) {
+                int t = (a[i] & (-a[i]));
+                if(t > low) {
+                    low = t;
+                    xl  = i;
+                }
+            }
+            a[xl] --;
+            for(int i = 0; i < n; i ++) {
+                if((a[i] & (-a[i])) == low && i != xl) {
+                    a[i] ++;
+                    break;
+                }
+            }
         }
-        cout << '\n';
     }
+    cout << res << '\n';
+    for(int x : a) {
+        cout << x << ' ';
+    }
+    cout << '\n';
 }
 int main() {
     ios::sync_with_stdio(false);

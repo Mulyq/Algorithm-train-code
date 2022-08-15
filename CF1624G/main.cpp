@@ -2,60 +2,59 @@
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> PII;
-const int N = 2e5 + 10;
-int p[N];
-int find(int x) {
-    if(p[x] != x) {
-        p[x] = find(p[x]);
+const int INF = 1e9 + 7, MAXN = 2e5 + 10, mod = 998244353;
+struct DSU {
+    int N;
+    vector<int> pr, siz;
+    DSU(int n) : N(n) {
+        pr.resize(n + 1);
+        siz.resize(n + 1);
+        for(int i = 0; i <= n; i++) {
+            pr[i] = i, siz[i] = 1;
+        }
     }
-    return p[x];
-}
-void merge(int x, int y) {
-    if(x != y);
-    p[y] = x;
-}
-struct edge {
-    int f, t, w;
-    bool ban;
+    int root(int x) {
+        return pr[x] == x ? x : pr[x] = root(pr[x]);
+    }
+    bool unite(int x, int y) {
+        int X = root(x), Y = root(y);
+        if(X == Y) return 1;
+        pr[X] = Y;
+        siz[Y] += siz[X];
+        return 0;
+    }
 };
 void solve() {
     int n, m;
     cin >> n >> m;
-    vector<edge> e(m);
-    for(int i = 0;i < m;i ++) {
-        cin >> e[i].f >> e[i].t >> e[i].w;
+    struct Edge {
+        int u, v, w;
+    };
+    vector<Edge> G(m);
+    for(auto &[u, v, w] : G) {
+        cin >> u >> v >> w;
     }
-
     int res = 0;
-
-    for(int i = 29;i >= 0;i --) {
+    for(int i = 29; i >= 0; i --) {
         int cur = res + (1 << i);
-        for(int i = 0;i <= n;i ++) p[i] = i;
-
-        for(auto it : e) {
-            if((it.w & cur) == 0) {
-                merge(find(it.f), find(it.t));
+        DSU dsu(n);
+        for(auto &[u, v, w] : G) {
+            if(!(cur & w)) {
+                dsu.unite(u, v);
             }
         }
-
-        bool ok = 1;
-        for(int i = 1;i <= n && ok;i ++) {
-            if(find(i) != find(1)) ok = 0;
-        }
-
-        if(ok) {
+        if(dsu.siz[dsu.root(1)] == n) {
             res = cur;
         }
     }
-    cout << (1 << 30) - 1 - res  << '\n';
+    cout << (1 << 30) - 1 - res << '\n';
 }
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    int T;
-    cin >> T;
-    while(T --) {
+    int _ = 1;
+    cin >> _;
+    while(_ --) {
         solve();
     }
-    return 0;
 }

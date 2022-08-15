@@ -2,70 +2,84 @@
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> PII;
-const int INF = 0x3f3f3f3f, MAXN = 1e5 + 10;
+const int INF = 1e9 + 7, MAXN = 2e5 + 10, mod = 998244353;
 int n, m, s;
-vector<vector<int>> e;
-vector<bool> vis;
-vector<int> a, b;
-void dfs1(int t) {
-    if(t == s) {
+vector<vector<int>> G, rG;
+vector<int> vis;
+vector<int> ok;
+int t;
+int l1, l2;
+void rdfs(int u, int p) {
+    l2 ++;
+    if(u == s) {
         cout << "Possible\n";
-        for(auto x : a) {
-            cout << x << ' ';
-        }
-        cout << '\n';
-        vector<int> temp = b;
+        cout << l1 << '\n';
+        vector<int> temp;
+        int now = t;
+        do {
+            temp.push_back(now);
+            now = vis[now];
+        } while(now != s);
+        temp.push_back(s);
         reverse(temp.begin(), temp.end());
-        for(auto x : temp) {
-            cout << x << ' ';
+        for(int v : temp) {
+            cout << v + 1 << ' ';
         }
-        cout << '\n';
+        cout <<'\n';
+        cout << l2 << '\n';
+        now = s;
+        temp.clear();
+        do {
+            temp.push_back(now);
+            now = vis[now];
+        } while(now != t);
+        temp.push_back(t);
+        for(int v : temp) {
+            cout << v  + 1 << ' ';
+        }
         exit(0);
     }
-    for(auto x : e[t] ) {
-        if(!vis[x]) {
-            b.push_back(x);
-            vis[x] = 1;
-            dfs1(x);
-            vis[x] = 0;
-            b.pop_back();
+    for(int v : rG[u]) if(v != p) {
+        if(vis[v] == - 1 && !ok[v]) {
+            vis[v] = u;
+            ok[v] = 1;
+            rdfs(v, u);
+            vis[v] = - 1;
         }
     }
+    l2 --;
 }
-void dfs(int ss) {
-    for(auto x : e[ss]) {
-        if(!vis[x]) {
-            a.push_back(ss);
-            vis[ss] = 1;
-            vis[s] = 0;
-            dfs1(x);
-            vis[s] = 1;
-            dfs(x);
-            vis[ss] = 0;
-            a.pop_back();
+void dfs(int u, int p) {
+    l1 ++;
+    if(u != s) {
+        l2 = 0;
+        t = u;
+        rdfs(u, p);
+    }
+    for(int v : G[u]) {
+        if(vis[v] == -1) {
+            vis[v] = u;
+            dfs(v, u);
+            vis[v] = -1;
         }
     }
-}
-void solve() {
-    cin >> n >> m >> s;
-    vis.resize(n + 1);
-    e.resize(n + 1);
-    for(int i = 0; i < m; i ++) {
-        int u, v;
-        cin >> u >> v;
-        e[u].push_back(v);
-    }
-    vis[s] = 1;
-    dfs(s);
-    cout << "Impossible\n";
+    l1 --;
 }
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    int _ = 1;
-    //cin >> _;
-    while(_ --) {
-        solve();
+    cin >> n >> m >> s;
+    s --;
+    G.resize(n), rG.resize(n);
+    vis.resize(n, -1);
+    ok.resize(n, 0);
+    for(int i = 0; i < m; i ++) {
+        int a, b;
+        cin >> a >> b;
+        a --, b --;
+        G[a].push_back(b);
+        rG[b].push_back(a);
     }
-    return 0;
+    dfs(s, s);
+    cout << "Impossible\n";
 }
