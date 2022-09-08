@@ -24,7 +24,7 @@ void solve() {
         return ;
     } else {
         for(int i = 0; i < n; i ++) {
-            for(int j = i + 1; j < n; j ++) {
+            for(int j = 0; j < n; j ++) if(j != i) {
                 if(G[i][j] == G[j][i]) {
                     cout << "YES\n";
                     cout << i + 1 << ' ';
@@ -35,16 +35,24 @@ void solve() {
                     }
                     cout << '\n';
                     return ;
-                } else if(m % 4 != 0) {
-                    for(int k = j + 1; k < n; k ++) {
-                        if(G[i][j] == G[j][k]) {
+                } else {
+                    for(int k = 0; k < n; k ++) if(k != i && k != j) {
+                        if(G[i][j] == G[j][k] && G[j][k] != G[k][j]) {
                             cout << "YES\n";
-                            cout << i + 1 << ' ';
-                            for(int c = 0; m ; m --, c ++) {
-                                if(c % 4 == 0) cout << j + 1 << ' ';
-                                else if(c % 4 == 1) cout << k  + 1 << ' ';
-                                else if(c % 4 == 2) cout << j + 1 << ' ';
-                                else cout << i + 1 << ' ';
+                            if(m % 4 != 0) {
+                                cout << i + 1 << ' ';
+                                for(int c = 0; m ; m --, c ++) {
+                                    if(c % 4 == 0) cout << j + 1 << ' ';
+                                    else if(c % 4 == 1) cout << k + 1 << ' ';
+                                    else if(c % 4 == 2) cout << j + 1 << ' ';
+                                    else cout << i + 1 << ' ';
+                                }
+                            } else {
+                                vector<int> tt(4);
+                                tt[0] = tt[2] = j + 1, tt[1] = k + 1, tt[3] = i + 1;
+                                for(int ii = 0; ii <= m; ii ++) {
+                                    cout << tt[ii % 4] << ' ';
+                                }
                             }
                             cout << '\n';
                             return ;
