@@ -11,13 +11,11 @@ void solve() {
     while(l < r && s[l] == s[r]) {
         l ++, r --;
     }
-    for(int i = l, j = l; i <= r;) {
-        while(j <= r && s[j] == s[i]) j ++;
-        if((j - i) % 2 != 0) {
+    for(int i = l; i <= r; i += 2) {
+        if(s[i] != s[i + 1]) {
             cout << "Alice\n";
             return ;
         }
-        i = j;
     }
     cout << "Draw\n";
 }
