@@ -12,7 +12,7 @@ void solve() {
     vector<int> c(n);
     int cnt = 0;
     for(int i = 0; i < n; i ++) {
-        cnt += (c[i] = abs(a[i] - b[i]));
+        cnt += ( c[i] = ( a[i] ^ b[i] ) );
     }
     if(cnt & 1) cout << "-1\n";
     else {
@@ -30,8 +30,6 @@ void solve() {
                 if(!ok) cout << y << '\n';
                 else cout << min(2ll * y, 1ll * x) << '\n';
             }
-        } else {
-            
         }
     }
 }
