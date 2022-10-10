@@ -4,7 +4,7 @@ typedef long long ll;
 typedef pair<int, int> PII;
 const int INF = 1e9 + 7, MAXN = 1100000, mod = 998244353;
 int n, q, BS;
-int a[MAXN], v[1010], s[MAXN];
+int a[MAXN], v[410], s[MAXN];
 void add(int l, int r, int k) {
     int bl = l / BS, br = r / BS;
     if(bl == br) {
