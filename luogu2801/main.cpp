@@ -69,7 +69,7 @@ int main() {
         cin >> a[i];
         s[i] = a[i];
     }
-    for(int i = 0; i <= BS; i ++) {
+    for(int i = 0; i * BS <= n ; i ++) {
         sort(s + i * BS, s + (i + 1) * BS);
     }
     while(q --) {
