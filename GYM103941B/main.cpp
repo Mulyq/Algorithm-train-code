@@ -13,29 +13,30 @@ int mp(char x) {
 }
 int main() {
     ios::sync_with_stdio(false);
-    
     cin.tie(0);
     string s;
     cin >> s;
     int n = s.size();
-    s = " " + s + s;
-    vector<ll> dp(n);
+    s = s + s;
+    vector<ll> d(16);
+    for(int i = 0; i < 16; i ++) {
+        if(!i) d[i] = 1;
+        else d[i] = 31 * d[i - 1];
+        d[i] %= mod;
+    }
     ll res = 0;
-    for(int l = 1; l <= 16; l ++) {
+    for(int l = 1; l <= 15; l ++) {
         int r = l + n;
-        vector<ll> dp (n + 1), d(20);
+        vector<ll> dp (n + 1);
         for(int i = 1; i <= n; i ++) {
-            for(int j = max(0, i - 15); j < i; j ++) {
-                ll t = 0;
-                for(int k = j + 1; k <= i; k ++) {
-                    t = t * 31 + mp(s[l + k]);
-                    t %= mod;
-                }
-                dp[i] = max(dp[i], dp[j] + t);
+            ll t = 0;
+            for(int j = i, x = 0; j > max(0, i - 15); j --, x ++) {
+                t += mp(s[l + j - 1]) * d[x];
+                t %= mod;
+                dp[i] = max(dp[i], dp[j - 1] + t);
             }
         }
         res = max(res, dp[n]);
     }
-    // cout << '\n';
     cout << res << '\n';
 }

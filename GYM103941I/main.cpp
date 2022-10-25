@@ -3,17 +3,15 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> PII;
 const int INF = 1e9 + 7, MAXN = 2e5 + 10, mod = 998244353;
-//0 X, 1 Y ,2 Z;
-PII t[3][10][10];
-// 0 未上电梯，1在x电梯上，2在y电梯上，3在z电梯上，4到达
-int v[510];
+PII t[3][10][10];   // 0  X, 1  Y ,2  Z; first 位置， second 编号
+int v[510];         // 0 未上电梯，1在x电梯上，2在y电梯上，3在z电梯上
 struct P {
-    int tim;
-    int x, y, z;
-    int tx, ty, tz;
-};
-P p[60];
+    int tim;        // 出现时间
+    int x, y, z;    // 当前位置
+    int tx, ty, tz; // 目标位置
+} p[60]; 
 int n, m, h, q, k;
+
 void work() {
     for(int i = 1; i <= m; i ++) {
         for(int j = 1; j <= h; j ++) {
@@ -40,6 +38,7 @@ void work() {
         }
     }
 }
+
 struct RES {
     int tt;
     int p;
@@ -53,7 +52,6 @@ struct RES {
         if(p != a.p) return p < a.p;
     }
 };
-
 vector<RES> res;
 int main() {
     ios::sync_with_stdio(false);
@@ -78,9 +76,10 @@ int main() {
         auto &[tim, x, y, z, tx, ty, tz] = p[i];
         cin >> tim >> x >> y >> z >> tx >> ty >> tz;
     }
-    int tt = 0;
+    int tt = 0; // 当前时间戳
+    bool ok = 0;
     do {
-        bool ok = 0;
+        ok = 0;
         for(int i = 0; i < q; i ++) {
             if(p[i].tim <= tt) {
                 // 未进电梯
@@ -142,10 +141,9 @@ int main() {
                 ok = 1;
             }
         }
-        if(!ok) break;
         work();
         tt ++;
-    } while (1);
+    } while (ok);
     sort(res.begin(), res.end());
     for(auto i : res) {
         // [time] Person person_id IN / OUT Elevator elevator_id at (x, y, z);

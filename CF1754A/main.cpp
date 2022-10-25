@@ -5,7 +5,18 @@ typedef pair<int, int> PII;
 const int INF = 1e9 + 7, MAXN = 2e5 + 10, mod = 998244353;
 
 void solve() {
-    
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+    int c = 0;
+    for(int i = 0; i < n; i ++) {
+        if(s[i] == 'Q') c ++;
+        else c --;
+        c = max(0, c);
+    }
+    if(c > 0) cout << "No\n";
+    else cout << "Yes\n";
 }
 int main() {
     ios::sync_with_stdio(false);
@@ -15,4 +26,5 @@ int main() {
     while(_ --) {
         solve();
     }
+    return 0;
 }
