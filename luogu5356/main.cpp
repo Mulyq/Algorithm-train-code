@@ -1,11 +1,23 @@
+
+
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> PII;
-const int INF = 1e9 + 7, MAXN = 1e5 + 10, mod = 998244353;
+const int INF = 1e9 + 7, MAXN = 1e5 + 9, mod = 998244353;
+void read(){}
+template<typename T,typename... Ts>
+inline void read(T &arg,Ts&... args) {
+    T x = 0, f = 1;
+    char c = getchar();
+    while(!isdigit(c)){if(c == '-') f = -1; c = getchar();}
+    while(isdigit(c)){x = (x << 3) +(x << 1) + (c - '0');c = getchar();}
+    arg = x * f;
+    read(args...);
+}
 int n, m, BS;
 ll a[MAXN];
-ll _1[MAXN], _2[MAXN];
+int _1[MAXN], _2[MAXN], t1, t2;
 struct BLOCK {
     int l, r;
     ll ex;
@@ -21,7 +33,7 @@ struct BLOCK {
         int s = r - l + 1;
         B.resize(s);
         mp.resize(s);
-        for(int i = l; i <= r; i ++) {
+        for(int i = l; i <= r; ++ i) {
             mp[i - l] = i;
         }
         sort(mp.begin(), mp.end(), [&] (int x, int y)  {
@@ -31,31 +43,26 @@ struct BLOCK {
             B[i] = a[mp[i]];
         }
     }
-// ----------------------------------------
     void rebuild(int s, int t, int k) {
-        vector<int> _1, _2;
-        for(int i = 0; i < mp.size(); i ++) {
+        t1 = t2 = 0;
+        for(int i = 0; i < mp.size(); ++ i) {
             int x = mp[i];
-            if(x >= s && x <= t) {
-                _1.push_back(x);
-            } else {
-                _2.push_back(x);
-            }
+            if(x >= s && x <= t) _1[t1 ++] = x;
+            else _2[t2 ++] = x;
         }
-        for(int i : _1) a[i] += k;
-        int i = 0, j = 0, c = 0;
-        while(i < _1.size() && j < _2.size()) {
+        for(int i = 0; i < t1; ++ i) a[_1[i]] += k;
+        int  i = 0, j = 0, c = 0;
+        while(i < t1 && j < t2) {
             if(a[_1[i]] < a[_2[j]]) mp[c ++] = _1[i ++];
             else mp[c ++] = _2[j ++];
         }
-        while(i < _1.size()) mp[c ++] = _1[i ++];
-        while(j < _2.size()) mp[c ++] = _2[j ++];
+        while(i < t1) mp[c ++] = _1[i ++];
+        while(j < t2) mp[c ++] = _2[j ++];
         for(int i = 0; i < mp.size(); i ++) B[i] = a[mp[i]];
     }
-// ----------------------------------------
 };
 vector<BLOCK> block;
-void add(int l, int r, int k) {
+inline void add(int l, int r, int k) {
     int lb = l / BS, rb = r / BS;
     if(lb == rb) {
         block[lb].rebuild(l, r, k);
@@ -67,7 +74,7 @@ void add(int l, int r, int k) {
         }
     }
 }
-ll query(int l, int r, int k) {
+inline ll query(int l, int r, int k) {
     int lb = l / BS, rb = r / BS;
     if(lb == rb) {
         int c = 0;
@@ -77,28 +84,24 @@ ll query(int l, int r, int k) {
         }
     } else {
         BLOCK _ex(block[lb].r - l + 1 + r - block[rb].l + 1);
-
-
-
-// -------------------------------------------
-
-        int c = 0;
+        t1 = t2 = 0;
         for(int i : block[lb].mp) {
-            if(i >= l) _ex.B[c ++] = a[i] + block[lb].ex;
+            if(i >= l) _1[t1 ++] = a[i] + block[lb].ex;
         }
         for(int i : block[rb].mp) {
-            if(i <= r) _ex.B[c ++] = a[i] + block[rb].ex;
+            if(i <= r) _2[t2 ++] = a[i] + block[rb].ex;
         }
-        sort(_ex.B.begin(), _ex.B.end());
-
-// -------------------------------------------
-
-
-
+        int c = 0, i = 0, j = 0;
+        while(i < t1 && j < t2) {
+            if(_1[i] < _2[j]) _ex.B[c ++] = _1[i ++];
+            else _ex.B[c ++] = _2[j ++];
+        }
+        while(i < t1) _ex.B[c ++] = _1[i ++];
+        while(j < t2) _ex.B[c ++] = _2[j ++];
         ll L = 1e18, R = -1e18;
         L = min(L, _ex.B[0]);
         R = max(R, _ex.B.back());
-        for(int i = lb + 1; i < rb; i ++) {
+        for(int i = lb + 1; i < rb; ++ i) {
             L = min(L, block[i].B[0] + block[i].ex);
             R = max(R, block[i].B.back() + block[i].ex);
         }
@@ -117,26 +120,24 @@ ll query(int l, int r, int k) {
     }
 }
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cin >> n >> m;
-    for(int i = 0; i < n; i ++) {
-        cin >> a[i];
+    read(n, m);
+    for(int i = 0; i < n; ++ i) {
+        read(a[i]);
     }
-    BS = sqrt(n) + 80;
-    for(int i = 0; 1ll * i * BS < n; i ++) {
+    BS = 1304;
+    for(int i = 0; 1ll * i * BS < n; ++ i) {
         int l = i * BS, r = min(n - 1, (i + 1) * BS - 1);
         block.push_back(BLOCK(l, r));
     }
     while(m --) {
         int op, l, r, k;
-        cin >> op >> l >> r >> k;
+        read(op, l, r, k);
         l --, r --;
         if(op == 1) {
             if(r - l + 1 < k) {
                 cout << "-1\n";
             } else {
-                cout << query(l, r, k) << '\n';
+                printf("%lld\n", query(l, r, k));
             }
         } else {
             add(l, r, k);
