@@ -5,9 +5,9 @@ typedef long long ll;
 typedef pair<int, int> PII;
 const int INF = 1e9 + 7, MAXN = 2e5 + 10, mod = 998244353;
 
-int add(int a,int b){ return a + b < mod ? a + b : a + b - mod;}
-int sub(int a,int b){ return a < b ? mod + a - b : a - b;}
-int mul(int a,int b){ return 1ll * a * b % mod; }
+inline int add(int a,int b){ return a + b < mod ? a + b : a + b - mod;}
+inline int sub(int a,int b){ return a < b ? mod + a - b : a - b;}
+inline int mul(int a,int b){ return 1ll * a * b % mod; }
 
 vector<vector<pair<int, ll>>> G(26);
 int n;
@@ -110,58 +110,58 @@ int cal(string s) {
 
 char s[10000];
 int expression(char*&s);
-int token(char*&s){
-    if(*s=='('){
-        s++;
-        int ret=expression(s);
-        s++;
+int token(char*&s) {
+    if(*s == '(') {
+        s ++;
+        int ret = expression(s);
+        s ++;
         return ret;
     }
-    if('a'<=*s&&*s<='z')return mp[*s++-'a'];
-    int ret=0;
-    while('0'<=*s&&*s<='9'){
-        ret=ret*10+*s++-'0';
+    if('a' <= *s && *s <= 'z')return mp[*s++-'a'];
+    int ret = 0;
+    while('0' <= *s && *s <= '9'){
+        ret = ret * 10 + *s++ - '0';
     }
-    return ret%mod;
+    return ret % mod;
 }
-int rank(char op){
-    switch(op){
-        case '-':return 1;
-        case '+':return 1;
-        case '*':return 0;
+int rank(char op) {
+    switch(op) {
+        case '-': return 1;
+        case '+': return 1;
+        case '*': return 0;
     }
     return 2;
 }
 int expression(char*&s){
-    stack<int>svar;
-    stack<char>sop;
+    stack<int> svar;
+    stack<char> sop;
     svar.push(token(s));
     while(true){
-        char op=*s;
-        if(!op||op==')')op='$';
+        char op = *s;
+        if(!op || op == ')') op = '$';
         else s++;
-        while(!sop.empty()&&::rank(sop.top())<=::rank(op)){
-            int b=svar.top();
+        while(!sop.empty() && ::rank(sop.top()) <= ::rank(op)){
+            int b = svar.top();
             svar.pop();
-            int a=svar.top();
+            int a = svar.top();
             svar.pop();
             switch(sop.top()){
                 case '+':{
-                    svar.push(add(a,b));
+                    svar.push(add(a, b));
                     break;
                 }
                 case '-':{
-                    svar.push(sub(a,b));
+                    svar.push(sub(a, b));
                     break;
                 }
                 case '*': {
-                    svar.push(mul(a,b));
+                    svar.push(mul(a, b));
                     break;
                 }
             }
             sop.pop();
         }
-        if(op=='$')break;
+        if(op == '$')break;
         svar.push(token(s));
         sop.push(op);
     }
