@@ -1,11 +1,9 @@
-
-
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> PII;
 const int INF = 1e9 + 7, MAXN = 1e5 + 9, mod = 998244353;
-void read(){}
+void read() {}
 template<typename T,typename... Ts>
 inline void read(T &arg,Ts&... args) {
     T x = 0, f = 1;
@@ -85,13 +83,16 @@ inline ll query(int l, int r, int k) {
     } else {
         BLOCK _ex(block[lb].r - l + 1 + r - block[rb].l + 1);
         t1 = t2 = 0;
+        // B
         for(int i : block[lb].mp) {
             if(i >= l) _1[t1 ++] = a[i] + block[lb].ex;
         }
+        // B
         for(int i : block[rb].mp) {
             if(i <= r) _2[t2 ++] = a[i] + block[rb].ex;
         }
         int c = 0, i = 0, j = 0;
+        // 2B
         while(i < t1 && j < t2) {
             if(_1[i] < _2[j]) _ex.B[c ++] = _1[i ++];
             else _ex.B[c ++] = _2[j ++];
@@ -101,11 +102,13 @@ inline ll query(int l, int r, int k) {
         ll L = 1e18, R = -1e18;
         L = min(L, _ex.B[0]);
         R = max(R, _ex.B.back());
+        // n / B
         for(int i = lb + 1; i < rb; ++ i) {
             L = min(L, block[i].B[0] + block[i].ex);
             R = max(R, block[i].B.back() + block[i].ex);
         }
         L --, R ++;
+        // log w * (n / B) * log B
         while(R > L + 1) {
             ll M = L + R  >> 1;
             int cnt = 0;
@@ -124,7 +127,7 @@ int main() {
     for(int i = 0; i < n; ++ i) {
         read(a[i]);
     }
-    BS = 1304;
+    BS = 912;
     for(int i = 0; 1ll * i * BS < n; ++ i) {
         int l = i * BS, r = min(n - 1, (i + 1) * BS - 1);
         block.push_back(BLOCK(l, r));
