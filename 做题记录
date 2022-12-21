@@ -1,0 +1,111 @@
+组合数学
+https://codeforces.com/problemset/problem/1696/E
+https://codeforces.com/problemset/problem/1622/D
+卡特兰数
+https://www.luogu.com.cn/problem/P1641
+
+----------------------------------------------------------------------------------------------------------------------
+
+构造
+https://codeforces.com/problemset/problem/1682/D
+构造 + 二分图
+https://codeforces.com/problemset/problem/1605/D
+
+----------------------------------------------------------------------------------------------------------------------
+
+lca
+https://codeforces.com/contest/1702/problem/G2
+
+----------------------------------------------------------------------------------------------------------------------
+
+二分 + dp + 拓扑排序
+https://codeforces.com/contest/1679/problem/D
+
+
+树形dp
+https://codeforces.com/contest/1689/problem/C
+
+
+摩尔投票 + dp
+https://codeforces.com/contest/1699/problem/D
+
+
+区间dp
+https://codeforces.com/contest/1625/problem/C
+
+----------------------------------------------------------------------------------------------------------------------
+
+二分
+https://codeforces.com/contest/1623/problem/C
+
+----------------------------------------------------------------------------------------------------------------------
+
+并查集
+https://codeforces.com/contest/1618/problem/G
+并查集 + 位运算
+https://codeforces.com/contest/1624/problem/G
+https://codeforces.com/problemset/problem/1689/E
+
+
+线段树
+https://codeforces.com/contest/1705/problem/E
+
+kruskal重构树 + 线段树
+https://codeforces.com/contest/1706/problem/E
+
+树剖+线段树染色
+https://acm.hdu.edu.cn/showproblem.php?pid=7150
+树剖+线段区间修改为特定的值
+https://codeforces.com/contest/343/problem/D
+
+图论
+
+拓扑排序DP
+https://codeforces.com/problemset/problem/1674/G
+https://codeforces.com/problemset/problem/1572/A
+搜索
+https://codeforces.com/problemset/problem/1666/L
+图论思维 + 数学暴力
+https://codeforces.com/problemset/problem/1552/D
+bfs + 神奇的剪枝
+https://codeforces.com/problemset/problem/1601/B
+简单bfs
+https://codeforces.com/problemset/problem/1613/E
+bfs 反复横跳 + dsu + 图
+https://codeforces.com/problemset/problem/1513/D
+bfs 有向图建图 思维
+https://codeforces.com/contest/1608/problem/C
+
+----------------------------------------------------------------------------------------------------------------------
+
+最短路 + DP 很有想法的一题目
+https://codeforces.com/problemset/problem/1681/D
+学一手hash好吧
+https://codeforces.com/problemset/problem/1574/D
+毒瘤零环 + 最短路 + 记忆化搜索 + 拓扑排序
+https://www.luogu.com.cn/problem/P3953
+毒瘤零环 + 最短路 + 拓扑排序最长路 + tarjan缩点
+https://acm.hdu.edu.cn/showproblem.php?pid=7175
+最短路 + dp
+https://codeforces.com/problemset/problem/1472/G
+
+数论
+https://www.luogu.com.cn/problem/P5656
+https://www.luogu.com.cn/problem/P3986
+
+
+dsu + mutiset
+https://codeforces.com/contest/1609/problem/D
+
+
+感觉不是很好做的记搜
+https://codeforces.com/contest/1517/problem/D
+
+图论 + 奇怪的构造
+https://codeforces.com/contest/1481/problem/D
+
+数论lcm + 思维
+https://codeforces.com/problemset/problem/1542/C
+
+构造 + 思维 （我想假了可能）
+https://codeforces.com/problemset/problem/1349/B
