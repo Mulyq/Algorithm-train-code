@@ -2,9 +2,11 @@
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> PII;
-const int INF = 1e9 + 7, MAXN = 2e5 + 10, mod = 998244353;
+#define int ll
+const int MAXN = 2e5 + 10, mod = 998244353;
+const ll INF = (1ll << 60);
 struct PAIR {
-    int l, r;
+    ll l, r;
     bool bad = 0;
 };
 void solve() {
@@ -28,43 +30,18 @@ void solve() {
             p[i].bad = 1;
         }
     }
-    vector<array<ll, 3>> dp(n);
-    dp[1][2] = 1e18;
-    if(p[0].bad || p[1].bad) {
-        dp[1][1] = 2ll * (p[1].l - p[0].r);
+    vector<array<ll, 2>> dp(n);
+    dp[0][0] = dp[0][1] = INF;
+    dp[0][p[0].bad] = 0;
+    for(int i = 1; i < n; i ++) {
+        dp[i][0] = dp[i][1] = INF;
+        dp[i][p[i].bad] = dp[i - 1][0];
+        dp[i][0] = min(dp[i][0], min(dp[i - 1][0], dp[i - 1][1]) + 2 * (p[i].l - p[i - 1].r));
     }
-    for(int i = 2; i < n; i ++) {
-        if(p[i].bad) {
-            if(p[i - 1].bad) {
-                dp[i][0] = min(dp[i - 1][1], dp[i - 1][2]);
-                dp[i][1] = dp[i - 1][0] + 2ll * (p[1].l - p[0].r);
-                if(p[i - 2].bad) {
-                    dp[i][2] = dp[i - 1][1] + 2ll * (p[1].l - p[0].r);
-                } else {
-                    dp[i][2] = 1e18;
-                }
-            } else {
-                dp[i][0] = min(dp[i - 1][0], dp[i - 1][1]);
-                dp[i][1] = dp[i][0] + 2ll * (p[1].l - p[0].r);
-                dp[i][2] = 1e18;
-            }
-        } else {
-            if(p[i - 1].bad) {
-                dp[i][0] = min(dp[i - 1][1], dp[i - 1][2]);
-                dp[i][1] = dp[i - 1][0] + 2ll * (p[1].l - p[0].r);
-            } else {
-                dp[i][0] = min(dp[i - 1][0], dp[i - 1][1]);
-                dp[i][1] = 1e18;
-            }
-            dp[i][2] = 1e18;
-        }
-    }
-    ll add = min(dp[n - 1][1], dp[n - 1][2]);
-    if(!p[n - 1].bad) add = min(add, dp[n - 1][0]);
-    res += add;
+    res += dp[n - 1][0];
     cout << res << '\n';
 }
-int main() {
+signed main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
     int _ = 1;
